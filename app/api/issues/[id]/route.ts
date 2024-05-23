@@ -20,7 +20,7 @@ export const GET = async (request: NextRequest, { params }: ParamsProps) => {
   return NextResponse.json(issue, { status: 200 });
 };
 
-export const PUT = async (request: NextRequest, { params }: ParamsProps) => {
+export const PATCH = async (request: NextRequest, { params }: ParamsProps) => {
   const body = await request.json();
   const validation = createIssueSchema.safeParse(body);
 
