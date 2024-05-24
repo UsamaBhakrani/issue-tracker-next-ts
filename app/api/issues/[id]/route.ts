@@ -47,10 +47,10 @@ export const DELETE = async (request: NextRequest, { params }: ParamsProps) => {
   });
 
   if (!issue)
-    return NextResponse.json({ error: "Item does not Exist" }, { status: 404 });
+    return NextResponse.json({ error: "Issue does not Exist" }, { status: 404 });
 
   const deletedIssue = await prisma.issue.delete({
-    where: { id: parseInt(params.id) },
+    where: { id: issue.id },
   });
 
   return NextResponse.json( deletedIssue , { status: 200 });
