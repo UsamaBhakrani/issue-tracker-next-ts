@@ -4,8 +4,10 @@ import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Skeleton } from "@/app/components";
+// import { useParams } from "next/navigation";
 
 const AssigneeSelect = () => {
+  // useParams()
   const {
     data: users,
     error,
@@ -28,7 +30,13 @@ const AssigneeSelect = () => {
           <Select.Label>Suggestions</Select.Label>
           {users?.map((user: User) => {
             return (
-              <Select.Item key={user.id} value={user.id}>
+              <Select.Item
+                key={user.id}
+                value={user.id}
+                // onChange={async () => {
+                //   const data = await axios.post<User>(`/api/issues/${user.id}`);
+                // }}
+              >
                 {user.name}
               </Select.Item>
             );
