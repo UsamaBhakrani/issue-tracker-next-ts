@@ -6,10 +6,11 @@ interface Props {
 
 export default function Home({ searchParams }: Props) {
   return (
-    <Pagination
-      itemCount={100}
-      pageSize={10}
-      currentPage={parseInt(searchParams.page)}
-    />
+    <></>
+    // <Pagination
+    //   itemCount={100}
+    //   pageSize={10}
+    //   currentPage={parseInt(searchParams.page)}
+    // />
   );
 }
