@@ -1,13 +1,12 @@
 "use client";
-import { User } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Skeleton } from "@/app/components";
-// import { useParams } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
-const AssigneeSelect = () => {
-  // useParams()
+const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const {
     data: users,
     error,
@@ -22,28 +21,39 @@ const AssigneeSelect = () => {
   if (isLoading) return <Skeleton />;
   if (error) return null;
 
+  const assignToUser = async (userId: string) => {
+    try {
+      await axios.patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId === "null" ? null : userId,
+      });
+    } catch (error) {
+      toast.error("Changes could not be saved");
+    }
+  };
+
   return (
-    <Select.Root>
-      <Select.Trigger placeholder="Assign..." />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggestions</Select.Label>
-          {users?.map((user: User) => {
-            return (
-              <Select.Item
-                key={user.id}
-                value={user.id}
-                // onChange={async () => {
-                //   const data = await axios.post<User>(`/api/issues/${user.id}`);
-                // }}
-              >
-                {user.name}
-              </Select.Item>
-            );
-          })}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Select.Root
+        defaultValue={issue.assignedToUserId || "Assign..."}
+        onValueChange={assignToUser}
+      >
+        <Select.Trigger placeholder="Assign..." />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            <Select.Item value="null">Unassigned</Select.Item>
+            {users?.map((user: User) => {
+              return (
+                <Select.Item key={user.id} value={user.id}>
+                  {user.name}
+                </Select.Item>
+              );
+            })}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <Toaster />
+    </>
   );
 };
 
