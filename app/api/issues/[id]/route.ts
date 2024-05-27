@@ -32,9 +32,11 @@ export const PATCH = async (request: NextRequest, { params }: ParamsProps) => {
   if (!validation.success)
     return NextResponse.json(validation.error.errors, { status: 400 });
 
-  if (body.assignedToUserId) {
+  const { assignedToUserId, title, description } = body;
+
+  if (assignedToUserId) {
     const user = await prisma.user.findUnique({
-      where: { id: body.assignedToUserId },
+      where: { id: assignedToUserId },
     });
 
     if (!user) {
@@ -52,9 +54,9 @@ export const PATCH = async (request: NextRequest, { params }: ParamsProps) => {
   const updatedIssue = await prisma.issue.update({
     where: { id: issue.id },
     data: {
-      title: body.title,
-      description: body.description,
-      assignedToUserId: body.assignedToUserId,
+      title,
+      description,
+      assignedToUserId,
     },
   });
   return NextResponse.json(updatedIssue, { status: 201 });
