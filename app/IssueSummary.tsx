@@ -22,7 +22,7 @@ const IssueSummary = ({ closed, inProgress, open }: Props) => {
   ];
 
   return (
-    <Flex gap="4">
+    <Flex gap="4" justify='center'>
       {containers.map((container) => {
         return (
           <Card key={container.label}>
